@@ -44,6 +44,8 @@ defmodule Haypoll.PollController do
   end
 
   def show(conn, %{"id" => id}) do
+    entry_query = from e in Entry, order_by: [asc: e.id]
+    poll_query = from p in Poll, preload: [entries: ^entry_query]
     poll = Repo.get!(Poll, id)
     render(conn, "show.html", poll: poll)
   end
